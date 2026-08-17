@@ -1,0 +1,39 @@
+# Python Caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Django Sensitive Settings & Databases
+.env
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+
+# Django Media and Static Directories
+# (Uncomment static/ if you collect static files into a single root directory)
+media/
+# static/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE and Code Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
