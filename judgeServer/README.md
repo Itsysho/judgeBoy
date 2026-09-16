@@ -29,27 +29,56 @@ judgeServer/
 
 ## Setup
 
-1. Create and activate a virtual environment
+### Create and activate a virtual environment
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-2. Install dependencies (no `requirements.txt` yet, install Django manually for now)
+### Configure environment variables
 
-   ```bash
-   pip install django
-   ```
+### Configure apply existing migrations to build your local database
 
-3. Run database migrations
+```bash
+python manage.py migrate
+```
 
-   ```bash
-   python manage.py migrate
-   ```
+### Create a superuser for your local db (optional)
 
-4. Start the development server
+```bash
+python manage.py createsuperuser
+```
 
-   ```bash
-   python manage.py runserver
-   ```
+### Run the development server
+
+```bash
+python manage.py runserver
+```
+
+The server runs at `http://127.0.0.1:8000/`.
+
+## API Documentation
+
+OpenAPI documentation is generated automatically by
+[drf-spectacular](https://drf-spectacular.readthedocs.io/) from the code
+(views / serializers), so it stays in sync with the actual API.
+
+With the development server running:
+
+| Path           | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `/api/docs/`   | Swagger UI (interactive, lets you try requests) |
+| `/api/redoc/`  | ReDoc (clean, read-only)                        |
+| `/api/schema/` | Raw OpenAPI schema (YAML, for tooling)          |
+
+Example: `http://127.0.0.1:8000/api/docs/`
+
+## Admin Site
+
+The Django admin is used as an internal developer tool (end users interact with
+the Next.js frontend, not the admin).
+
+- URL: `http://127.0.0.1:8000/admin/`
+- Log in with a superuser account.

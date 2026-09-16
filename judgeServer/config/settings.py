@@ -42,9 +42,11 @@ INSTALLED_APPS = [
 
     # third-party
     'rest_framework',
+    'drf_spectacular',  # api document
 
     # local apps
     'apps.accounts',
+
 ]
 
 MIDDLEWARE = [
@@ -115,6 +117,16 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    # use drf-spectacular as schema generator
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# drf-spectacular setting
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Judge boy API',
+    'DESCRIPTION': 'Api for Judge boy',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 
