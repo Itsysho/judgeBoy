@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     # Inheritance from AbstractUser
-    # a colume in table
+    # a column in table
     # public-facing identifier, so we don't expose the sequential pk
     # would call uuid.uuid4 everytime
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
