@@ -128,6 +128,9 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Api for Judge boy',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+
+    # declare the unified error shape so it appears in the docs
+    "ENUM_NAME_OVERRIDES": {},
 }
 
 
