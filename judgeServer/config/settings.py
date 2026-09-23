@@ -9,26 +9,44 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
 from pathlib import Path
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
-SECRET_KEY = os.environ["SECRET_KEY"]
-ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"]
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(BASE_DIR / ".env")
+
+env = environ.Env(
+    # define type + default for each var: Env(VAR=(type, default))
+    DEBUG=(bool, False),
+)
+
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+
 
 # Application definition
+# the dotted path to an application module
 
 INSTALLED_APPS = [
+    # server admin system, that why we need `apps/accounts/admin.py`
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third-party
+    'rest_framework',
+    'drf_spectacular',  # api document
+
+    # local apps
+    'apps.accounts',
+
 ]
 
 MIDDLEWARE = [
@@ -75,6 +93,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = "accounts.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,6 +109,29 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Django REST framework
+# https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    # use JWT to authenticate every API request by default
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",
+    # use drf-spectacular as schema generator
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# drf-spectacular setting
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Judge boy API',
+    'DESCRIPTION': 'Api for Judge boy',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    # declare the unified error shape so it appears in the docs
+    "ENUM_NAME_OVERRIDES": {},
+}
 
 
 # Internationalization
