@@ -1,12 +1,10 @@
 from django.db.models import QuerySet
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from apps.core.openapi import (
     VALIDATION_ERROR_RESPONSE,
-    UNAUTHENTICATED_RESPONSE,
-    PERMISSION_DENIED_RESPONSE,
     NOT_FOUND_RESPONSE,
     CONFLICT_RESPONSE,
     INTERNAL_RESPONSE
@@ -22,8 +20,6 @@ from .serializers import ProblemListSerializer
     responses={
         200: ProblemListSerializer,
         400: VALIDATION_ERROR_RESPONSE,
-        401: UNAUTHENTICATED_RESPONSE,
-        403: PERMISSION_DENIED_RESPONSE,
         404: NOT_FOUND_RESPONSE,
         409: CONFLICT_RESPONSE,
         500: INTERNAL_RESPONSE,
@@ -33,12 +29,14 @@ class ProblemListView(ListAPIView):
     """Return the List of problem."""
 
     serializer_class = ProblemListSerializer
-    permission_classes = [IsAuthenticated]
+    # Problem list is public — any visitor can browse available problems.
+    permission_classes = [AllowAny]
 
     def get_queryset(self) -> QuerySet[Problem]:
         level = self.request.query_params.get('level')
 
+        queryset = Problem.objects.filter(public_status=1)
         if level:
-            return Problem.objects.filter(level=level)
+            return queryset.filter(level=level)
 
-        return Problem.objects.all()
+        return queryset

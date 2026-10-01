@@ -26,8 +26,6 @@ from .serializers import UserProfileSerializer
     responses={
         200: TokenObtainPairView().get_serializer_class(),  # simplejwt's own response
         400: VALIDATION_ERROR_RESPONSE,  # missing/invalid fields
-        401: UNAUTHENTICATED_RESPONSE,  # wrong credentials
-        403: PERMISSION_DENIED_RESPONSE,
         404: NOT_FOUND_RESPONSE,
         409: CONFLICT_RESPONSE,
         500: INTERNAL_RESPONSE,
@@ -43,7 +41,6 @@ class LoginView(TokenObtainPairView):
     responses={
         200: TokenRefreshView().get_serializer_class(),
         401: UNAUTHENTICATED_RESPONSE,  # invalid or expired refresh token
-        403: PERMISSION_DENIED_RESPONSE,
         404: NOT_FOUND_RESPONSE,
         409: CONFLICT_RESPONSE,
         500: INTERNAL_RESPONSE,
@@ -61,7 +58,6 @@ class RefreshView(TokenRefreshView):
         200: UserProfileSerializer,
         400: VALIDATION_ERROR_RESPONSE,
         401: UNAUTHENTICATED_RESPONSE,
-        403: PERMISSION_DENIED_RESPONSE,
         404: NOT_FOUND_RESPONSE,
         409: CONFLICT_RESPONSE,
         500: INTERNAL_RESPONSE,

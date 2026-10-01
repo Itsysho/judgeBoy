@@ -121,6 +121,8 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.StandardLimitOffsetPagination",
 
+    'TEST_REQUEST_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
+
     # use drf-spectacular as schema generator
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
