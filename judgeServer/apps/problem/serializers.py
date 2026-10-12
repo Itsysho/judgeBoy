@@ -9,3 +9,11 @@ class ProblemListSerializer(serializers.ModelSerializer):
         model = Problem
         fields = ["id", "title", "level", "time_stamp"]
         read_only_fields = ["id"]
+
+
+class ProblemSerializer(serializers.ModelSerializer):
+    """Serializes problem detail."""
+    class Meta:
+        model = Problem
+        fields = ["id", "title", "level", "time_stamp", "src"]
+        read_only_fields = ["id"]

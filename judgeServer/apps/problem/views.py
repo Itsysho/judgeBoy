@@ -1,6 +1,6 @@
 from django.db.models import QuerySet
 from drf_spectacular.utils import extend_schema
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.permissions import AllowAny
 
 from apps.core.openapi import (
@@ -11,7 +11,7 @@ from apps.core.openapi import (
 )
 
 from .models import Problem
-from .serializers import ProblemListSerializer
+from .serializers import (ProblemListSerializer, ProblemSerializer)
 
 
 @extend_schema(
@@ -40,3 +40,23 @@ class ProblemListView(ListAPIView):
             return queryset.filter(level=level)
 
         return queryset
+
+
+@extend_schema(
+    summary="Get Problem detail",
+    description="Return current problem detail with id.",
+    responses={
+        200: ProblemSerializer,
+        400: VALIDATION_ERROR_RESPONSE,
+        404: NOT_FOUND_RESPONSE,
+        409: CONFLICT_RESPONSE,
+        500: INTERNAL_RESPONSE,
+    },
+)
+class ProblemView(RetrieveAPIView):
+    """Return the problem."""
+
+    serializer_class = ProblemSerializer
+    permission_classes = [AllowAny]
+
+    queryset = Problem.objects.filter(public_status=1)
